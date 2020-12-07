@@ -28,6 +28,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("2) List all blogs");
             Console.WriteLine("3) Delete a blog");
             Console.WriteLine("4) Edit a blog");
+            Console.WriteLine("5) View Blog Details");
             Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
@@ -46,6 +47,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4": 
                     Update();
                     return this;
+                case "5":
+                    ViewDetails();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -54,6 +58,37 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
            
+        }
+
+        private void ViewDetails()
+        {
+            List();
+            Console.Write("Select a blog to view the details: ");
+            int focusBLog = int.Parse(Console.ReadLine());
+            Blog blog = _blogRepository.Get(focusBLog);
+            Console.WriteLine($"{blog.Title} - {blog.Url}");
+            Console.WriteLine("1) View");
+            Console.WriteLine("2) Add Tag");
+            Console.WriteLine("3) Remove Tag");
+            Console.WriteLine("4) View Posts");
+            Console.WriteLine("0) Go Back");
+
+            Console.Write("> ");
+            string choice = Console.ReadLine();
+            switch (choice)
+            {
+                case "1":
+                    throw new NotImplementedException();
+                case "2":
+                    throw new NotImplementedException();
+                case "3":
+                    throw new NotImplementedException();
+                case "4":
+                    throw new NotImplementedException();
+                case "0":
+                    return;
+            }
+
         }
 
         private void Update()
