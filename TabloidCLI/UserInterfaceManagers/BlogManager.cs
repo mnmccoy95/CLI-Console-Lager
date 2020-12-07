@@ -39,8 +39,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     List();
                     return this;
-                case "3": 
-                    throw new NotImplementedException();
+                case "3":
+                    Delete();
+                    return this;
                 case "4": 
                     throw new NotImplementedException();
 
@@ -53,6 +54,11 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
            
+        }
+
+        private void Delete()
+        {
+
         }
 
         private void List()
