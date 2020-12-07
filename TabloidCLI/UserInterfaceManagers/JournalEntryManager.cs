@@ -36,6 +36,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     Add();
                     return this;
+                case "4":
+                    Delete();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -72,6 +75,15 @@ namespace TabloidCLI.UserInterfaceManagers
             journalEntry.CreateDateTime = DateTime.Now;
 
             _journalEntryRepository.Insert(journalEntry);
+        }
+
+        private void Delete()
+        {
+            List();
+            Console.Write("Enter the ID of the entry to delete: ");
+            int entryToDelete = int.Parse(Console.ReadLine());
+            _journalEntryRepository.Delete(entryToDelete);
+
         }
     }
 }
