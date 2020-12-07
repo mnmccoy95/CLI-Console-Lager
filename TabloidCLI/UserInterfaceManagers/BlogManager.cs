@@ -45,9 +45,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
                 case "4": 
                     throw new NotImplementedException();
-
                 case "0":
-                   
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
@@ -59,6 +57,10 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Delete()
         {
+            List();
+            Console.Write("Enter the ID of the blog to delete: ");
+            int blogToDelete = int.Parse(Console.ReadLine());
+            _blogRepository.Delete(blogToDelete);
 
         }
 
@@ -69,7 +71,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id}) {blog.Title} - {blog.Url}");
             }
-
         }
 
         private void Add()
