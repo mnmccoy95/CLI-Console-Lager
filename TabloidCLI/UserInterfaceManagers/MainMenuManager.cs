@@ -23,7 +23,7 @@ namespace TabloidCLI.UserInterfaceManagers
             string choice = Console.ReadLine();
             switch (choice)
             {
-                case "1": throw new NotImplementedException();
+                case "1": throw new JournalEntryManager(this, CONNECTION_STRING);
                 case "2": throw new NotImplementedException();
                 case "3": return new AuthorManager(this, CONNECTION_STRING);
                 case "4": throw new NotImplementedException();
