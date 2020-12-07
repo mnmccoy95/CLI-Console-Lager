@@ -96,20 +96,23 @@ namespace TabloidCLI.UserInterfaceManagers
             List();
             Console.Write("Enter the ID of the blog to edit ");
             int id = int.Parse(Console.ReadLine());
-
-            string title = "";
-            while (title == "")
+            Blog oldBlog = _blogRepository.Get(id);
+                      
+            Console.Write("Enter the new title: ");
+            string title = Console.ReadLine();
+                       
+            Console.Write("Enter the new URL: ");
+            string url = Console.ReadLine();
+                 
+            if (title == "")
             {
-                Console.Write("Enter the new title: ");
-                title = Console.ReadLine();
+                title = oldBlog.Title;
             }
 
-            string url = "";
-            while (url == "")
+            if (url == "")
             {
-                Console.Write("Enter the new URL: ");
-                url = Console.ReadLine();
-            }            
+                url = oldBlog.Url;
+            }
 
             Blog blog = new Blog()
             {
