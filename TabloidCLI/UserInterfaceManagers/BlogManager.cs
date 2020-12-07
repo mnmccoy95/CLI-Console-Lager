@@ -44,7 +44,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     Delete();
                     return this;
                 case "4": 
-                    throw new NotImplementedException();
+                    Update();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -53,6 +54,26 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
            
+        }
+
+        private void Update()
+        {
+            List();
+            Console.Write("Enter the ID of the blog to edit");
+            int id = int.Parse(Console.ReadLine());
+            Console.Write("Enter the new title: ");
+            string title = Console.ReadLine();
+            Console.Write("Enter the new URL: ");
+            string url = Console.ReadLine();
+
+            Blog blog = new Blog()
+            {
+                Title = title,
+                Url = url,
+                Id = id
+            };
+
+            _blogRepository.Update(blog);
         }
 
         private void Delete()
