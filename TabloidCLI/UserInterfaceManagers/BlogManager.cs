@@ -28,6 +28,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("2) List all blogs");
             Console.WriteLine("3) Delete a blog");
             Console.WriteLine("4) Edit a blog");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -39,20 +40,28 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "2":
                     List();
                     return this;
-                case "3": 
-                    throw new NotImplementedException();
+                case "3":
+                    Delete();
+                    return this;
                 case "4": 
                     throw new NotImplementedException();
-
                 case "0":
-                    Console.WriteLine("Good bye");
-                    return null;
+                    return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;
             }
 
            
+        }
+
+        private void Delete()
+        {
+            List();
+            Console.Write("Enter the ID of the blog to delete: ");
+            int blogToDelete = int.Parse(Console.ReadLine());
+            _blogRepository.Delete(blogToDelete);
+
         }
 
         private void List()
@@ -62,7 +71,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{blog.Id}) {blog.Title} - {blog.Url}");
             }
-
         }
 
         private void Add()
