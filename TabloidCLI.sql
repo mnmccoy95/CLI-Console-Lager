@@ -1,6 +1,6 @@
 USE [master]
 
-IF db_id('TabloidCLI') IS NULl
+IF db_id('TabloidCLI') IS NULL
 BEGIN
     CREATE DATABASE [TabloidCLI]
 END;
