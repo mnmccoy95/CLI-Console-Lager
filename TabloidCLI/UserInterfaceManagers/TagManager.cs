@@ -22,6 +22,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("");
             Console.WriteLine("Tag Menu");
             Console.WriteLine(" 1) List Tags");
             Console.WriteLine(" 2) Add Tag");
@@ -46,35 +47,32 @@ namespace TabloidCLI.UserInterfaceManagers
                     Remove();
                     return this;
                 case "0":
+                    Console.WriteLine("");
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;
             }
         }
-        private Author ChooseAuthor(string prompt = null)
+        private Tag ChooseTag(string prompt = null)
         {
             if (prompt == null)
             {
-                prompt = "Please choose an Author:";
+                prompt = "Please choose a Tag:";
             }
-
             Console.WriteLine(prompt);
-
-            List<Author> authors = _authorRepository.GetAll();
-
-            for (int i = 0; i < authors.Count; i++)
+            List<Tag> tags = _tagRepository.GetAll();
+            for (int i = 0; i < tags.Count; i++)
             {
-                Author author = authors[i];
-                Console.WriteLine($" {i + 1}) {author.FullName}");
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name} ");
             }
             Console.Write("> ");
-
             string input = Console.ReadLine();
             try
             {
                 int choice = int.Parse(input);
-                return authors[choice - 1];
+                return tags[choice - 1];
             }
             catch (Exception ex)
             {
@@ -84,17 +82,38 @@ namespace TabloidCLI.UserInterfaceManagers
         }
         private void List()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("");
+            Console.WriteLine("Current Tags:");
+            List<Tag> tags = _tagRepository.GetAll();
+            foreach (Tag tag in tags)
+            {
+                Console.WriteLine($"-{tag}");
+            }
+            Console.WriteLine("");
         }
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("");
+            Tag tag = new Tag();
+            Console.Write("Insert Tag Name: ");
+            tag.Name = Console.ReadLine();
+            _tagRepository.Insert(tag);
+            Console.WriteLine("");
         }
 
         private void Edit()
         {
-            throw new NotImplementedException();
+            Tag tagToEdit = ChooseTag("Which tag would you like to modify?");
+            if (tagToEdit == null) { return; }
+            Console.WriteLine();
+            Console.Write("New tag name (blank to leave unchanged):");
+            string name = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                tagToEdit.Name = name;
+            }
+            _tagRepository.Update(tagToEdit);
         }
 
         private void Remove()
