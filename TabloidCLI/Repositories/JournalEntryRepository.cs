@@ -29,33 +29,14 @@ namespace TabloidCLI
         }
         public List<JournalEntry> GetAll()
         {
-            List<JournalEntry> journalEntries = new List<JournalEntry>
-            {
-                new JournalEntry
-                {
-                    Title = "",
-                    Content = "",
-                    CreateDateTime = DateTime.Now
-                },
-                new JournalEntry
-                {
-                    Title = "",
-                    Content = "",
-                    CreateDateTime = DateTime.Now
-                }
-            };
+            List<JournalEntry> journalEntries = new List<JournalEntry>();
             return journalEntries;
         }
 
         public JournalEntry Get(int id)
         {
-            JournalEntry journalEntry = new JournalEntry()
-            {
-                Title = "",
-                Content = "",
-                CreateDateTime = DateTime.Now
-            };
-            return JournalEntry;
+            JournalEntry journalEntry = new JournalEntry();
+            return journalEntry;
         }
 
         public void Update(JournalEntry journalEntry)
