@@ -39,6 +39,9 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "3":
                     Edit();
                     return this;
+                case "4":
+                    Delete();
+                    return this;
                 case "0":
                     return _parentUI;
                 default:
@@ -130,6 +133,15 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             _journalEntryRepository.Update(journalToEdit);
+        }
+
+        private void Delete()
+        {
+            List();
+            Console.Write("Enter the ID of the entry to delete: ");
+            int entryToDelete = int.Parse(Console.ReadLine());
+            _journalEntryRepository.Delete(entryToDelete);
+
         }
     }
 }
