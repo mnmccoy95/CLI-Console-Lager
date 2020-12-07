@@ -37,7 +37,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this; 
                 case "2":
-                    throw new NotImplementedException();
+                    List();
+                    return this;
                 case "3": 
                     throw new NotImplementedException();
                 case "4": 
@@ -52,6 +53,16 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
            
+        }
+
+        private void List()
+        {
+            List<Blog> allBlogs = _blogRepository.GetAll();
+            foreach (Blog blog in allBlogs)
+            {
+                Console.WriteLine($"{blog.Id}) {blog.Title} - {blog.Url}");
+            }
+
         }
 
         private void Add()

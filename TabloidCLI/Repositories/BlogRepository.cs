@@ -37,8 +37,30 @@ namespace TabloidCLI
 
         public List<Blog> GetAll()
         {
-            List<Blog> blogList = new List<Blog>();
-            return blogList;
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT id, Title, URL FROM Blog";
+
+                    List<Blog> blogs = new List<Blog>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Blog blog = new Blog()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("URL"))
+                        };
+                        blogs.Add(blog);
+                    }
+                    reader.Close();
+                    return blogs;
+                }
+            }
         }
 
         public Blog Get(int id)
