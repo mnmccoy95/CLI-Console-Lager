@@ -28,6 +28,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("2) List all blogs");
             Console.WriteLine("3) Delete a blog");
             Console.WriteLine("4) Edit a blog");
+            Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
@@ -46,8 +47,8 @@ namespace TabloidCLI.UserInterfaceManagers
                     throw new NotImplementedException();
 
                 case "0":
-                    Console.WriteLine("Good bye");
-                    return null;
+                   
+                    return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
                     return this;
