@@ -30,6 +30,9 @@ namespace TabloidCLI.UserInterfaceManagers
             string choice = Console.ReadLine();
             switch (choice)
             {
+                case "1":
+                    List();
+                    return this;
                 case "2":
                     Add();
                     return this;
@@ -39,6 +42,20 @@ namespace TabloidCLI.UserInterfaceManagers
                     Console.WriteLine("Invalid Selection");
                     return this;
             }
+        }
+
+        private void List()
+        {
+            List<JournalEntry> allJournals = _journalEntryRepository.GetAll();
+            foreach (JournalEntry journal in allJournals)
+            {
+                Console.WriteLine("");
+                Console.WriteLine($"{journal.Id}) {journal.Title} - {journal.CreateDateTime}");
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine($"{journal.Content}");
+                Console.WriteLine("");
+            }
+
         }
 
         private void Add()
