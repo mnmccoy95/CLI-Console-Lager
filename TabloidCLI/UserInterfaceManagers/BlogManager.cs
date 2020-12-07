@@ -59,12 +59,22 @@ namespace TabloidCLI.UserInterfaceManagers
         private void Update()
         {
             List();
-            Console.Write("Enter the ID of the blog to edit");
+            Console.Write("Enter the ID of the blog to edit ");
             int id = int.Parse(Console.ReadLine());
-            Console.Write("Enter the new title: ");
-            string title = Console.ReadLine();
-            Console.Write("Enter the new URL: ");
-            string url = Console.ReadLine();
+
+            string title = "";
+            while (title == "")
+            {
+                Console.Write("Enter the new title: ");
+                title = Console.ReadLine();
+            }
+
+            string url = "";
+            while (url == "")
+            {
+                Console.Write("Enter the new URL: ");
+                url = Console.ReadLine();
+            }            
 
             Blog blog = new Blog()
             {
@@ -99,10 +109,10 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine("New Blog");
             Blog blog = new Blog();
 
-            Console.Write("Enter Blog Title:");
+            Console.Write("Enter Blog Title: ");
             blog.Title = Console.ReadLine();
 
-            Console.Write("Enter Blog URL:");
+            Console.Write("Enter Blog URL: ");
             blog.Url = Console.ReadLine();
 
             _blogRepository.Insert(blog);
