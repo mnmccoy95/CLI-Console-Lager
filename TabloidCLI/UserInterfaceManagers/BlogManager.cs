@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using TabloidCLI.Models;
+using TabloidCLI.Repositories;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -19,9 +20,10 @@ namespace TabloidCLI.UserInterfaceManagers
             _connectionString = connectionString;
         }
 
-
+        
         public IUserInterfaceManager Execute()
         {
+            Console.WriteLine("--------------------");
             Console.WriteLine("Blog Menu");
 
             Console.WriteLine("1) Add a blog");
@@ -62,11 +64,24 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void ViewDetails()
         {
+            Console.WriteLine("--------------------");
             List();
             Console.Write("Select a blog to view the details: ");
             int focusBLog = int.Parse(Console.ReadLine());
+            Console.WriteLine("--------------------");
             Blog blog = _blogRepository.Get(focusBLog);
+            List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+            
+
             Console.WriteLine($"{blog.Title} - {blog.Url}");
+            Console.Write("Tags: ");
+            foreach (Tag tag in blogTags)
+            {
+                Console.Write($"{tag.Name} ");
+            }
+
+            Console.WriteLine(" ");
+
             Console.WriteLine("1) View");
             Console.WriteLine("2) Add Tag");
             Console.WriteLine("3) Remove Tag");
@@ -80,7 +95,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "1":
                     throw new NotImplementedException();
                 case "2":
-                    throw new NotImplementedException();
+                    AddTag(blog);
+                    return;
                 case "3":
                     throw new NotImplementedException();
                 case "4":
@@ -89,6 +105,29 @@ namespace TabloidCLI.UserInterfaceManagers
                     return;
             }
 
+        }
+
+        private void AddTag(Blog blog)
+        {
+            Console.WriteLine("--------------------");
+            TagList();
+            Console.Write("Select a tag to add: ");
+            int tagId = int.Parse(Console.ReadLine());
+            BlogTag newTag = new BlogTag
+            {
+                BlogId = blog.Id,
+                TagId = tagId
+            };
+            _blogRepository.InsertTag(newTag);
+        }
+
+        public void TagList()
+        {
+            List<Tag> allTags = _blogRepository.GetAllTags();
+            foreach (Tag tag in allTags)
+            {
+                Console.WriteLine($"{tag.Id}) {tag.Name}");
+            }
         }
 
         private void Update()

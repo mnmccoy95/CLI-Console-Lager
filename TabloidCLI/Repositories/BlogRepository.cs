@@ -100,7 +100,7 @@ namespace TabloidCLI
 
                     while (reader.Read())
                     {
-                        if  (blog == null)
+                        if (blog == null)
                         {
                             blog = new Blog()
                             {
@@ -119,5 +119,76 @@ namespace TabloidCLI
 
         }
 
+        public List<Tag> GetLinkedTags(int blogId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select Tag.Name, Tag.Id From BlogTag JOIN Tag on BlogTag.TagId = Tag.Id WHERE BlogTag.BlogId = @blogId";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+
+                    List<Tag> blogTags = new List<Tag>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                        blogTags.Add(tag);
+                    }
+                    reader.Close();
+                    return blogTags;
+                }
+            }
+
+        }
+
+        public List<Tag> GetAllTags()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id, Name FROM Tag";
+                    List<Tag> tagList = new List<Tag>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                        tagList.Add(tag);
+                    }
+                    reader.Close();
+                    return tagList;
+                }
+                 
+            }
+        }
+    
+        public void InsertTag(BlogTag tag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "INSERT INTO BlogTag(BlogId, TagId) VALUES (@blogId, @tagId)";
+                    cmd.Parameters.AddWithValue("@blogId", tag.BlogId);
+                    cmd.Parameters.AddWithValue("tagId", tag.TagId);
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Successfully added tag!");
+                }
+            }            
+        }
     }
 }
