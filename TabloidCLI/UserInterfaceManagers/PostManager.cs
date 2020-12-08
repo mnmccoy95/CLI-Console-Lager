@@ -177,12 +177,23 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public static DateTime PromptDateTime()
         {
-            Console.WriteLine("Day: ");
-            int day = Convert.ToInt32(Console.ReadLine());
+            Post post = new Post();
+            post.PublishDateTime = new DateTime(0, 0, 0);
+            while (post.PublishDateTime.Day == 0)
+            {
+                Console.WriteLine("Day: ");
+                int day = Convert.ToInt32(Console.ReadLine());
+                if (day > 0 && day < 31)
+                {
+                    post.PublishDateTime = new DateTime(0, 0, day);
+                }
+            }
+            while ()
+            {
+                Console.WriteLine("Month: ");
+                int month = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Month: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-
+            }
             Console.WriteLine("Year: ");
             int year = Convert.ToInt32(Console.ReadLine());
 
