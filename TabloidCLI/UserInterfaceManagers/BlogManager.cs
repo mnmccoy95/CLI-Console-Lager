@@ -98,13 +98,26 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag(blog);
                     return;
                 case "3":
-                    throw new NotImplementedException();
+                    RemoveTag(blog);
+                    return;
                 case "4":
                     throw new NotImplementedException();
                 case "0":
                     return;
             }
 
+        }
+
+        private void RemoveTag(Blog blog)
+        {
+            List<Tag> linkedTags = _blogRepository.GetLinkedTags(blog.Id);
+            foreach (Tag tag in linkedTags)
+            {
+                Console.WriteLine($"{tag.Id}) {tag.Name}");
+            }
+            Console.Write("Enter the ID of the tag you wish to delete: ");
+            int tagToDelete = int.Parse(Console.ReadLine());
+            _blogRepository.DeleteTag(tagToDelete);
         }
 
         private void AddTag(Blog blog)
