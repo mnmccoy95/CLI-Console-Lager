@@ -225,22 +225,34 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 postToEdit.Title = Title;
             }
-            Console.WriteLine($"{postToEdit.Title}");
+
             Console.Write("New URL (blank to leave unchanged: ");
             string Url = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(Url))
             {
                 postToEdit.Url = Url;
             }
-            Console.WriteLine($"{postToEdit.Url}");
-            Console.Write("New PublishDateTime: ");
-            postToEdit.PublishDateTime = PromptDateTime();
 
-            Console.Write("New Author: ");
-            postToEdit.Author = ChooseA();
+            Console.Write("New PublishDateTime (Do you want to change the publish date? y/n: ");
+            string changeDateTime = Console.ReadLine().ToLower();
+            if (changeDateTime == "y")
+            {
+                postToEdit.PublishDateTime = PromptDateTime();
+            }
 
-            Console.Write("New Blog: ");
-            postToEdit.Blog = ChooseB();
+            Console.Write("New Author (Do you what to change the Author? y/n: ");
+            string changeAuthor = Console.ReadLine().ToLower();
+            if (changeAuthor == "y")
+            {
+                postToEdit.Author = ChooseA();
+            }
+
+            Console.Write("New Blog (Do you want to change the Blog? y/n: ");
+            string changeBlog = Console.ReadLine().ToLower();
+            if (changeBlog == "y")
+            {
+                postToEdit.Blog = ChooseB();
+            }
 
             _postRepository.Update(postToEdit);
         }
