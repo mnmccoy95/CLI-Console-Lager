@@ -16,7 +16,10 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT";
+                    cmd.CommandText = @"SELECT Post.Id, Post.Title, Post.URL, Post.PublishDateTime, Author.FirstName, Author.LastName, Blog.Title
+                                        FROM Post
+                                        JOIN Author on Author.Id = Post.AuthorId
+                                        JOIN Blog on Blog.Id = Post.BlogId";
 
                     List<Post> posts = new List<Post>();
 
@@ -132,17 +135,60 @@ namespace TabloidCLI.Repositories
 
         public void Insert(Post post)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Post ()
+                                         VALUES ()";
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Update(Post post)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"UPDATE Post
+                                        SET
+                                        WHERE";
+
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+                    cmd.Parameters.AddWithValue("@", );
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Post WHERE id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
