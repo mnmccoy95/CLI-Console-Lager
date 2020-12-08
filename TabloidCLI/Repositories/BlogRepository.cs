@@ -84,6 +84,41 @@ namespace TabloidCLI
             }
         }
 
+        public Blog Get(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Title, Url, Id FROM Blog WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Blog blog = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        if (blog == null)
+                        {
+                            blog = new Blog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Url = reader.GetString(reader.GetOrdinal("Url"))
+                            };
+                        }
+                    }
+
+                    reader.Close();
+
+                    return blog;
+                }
+            }
+
+        }
+
         public List<Tag> GetLinkedTags(int blogId)
         {
             using (SqlConnection conn = Connection)
@@ -112,42 +147,6 @@ namespace TabloidCLI
             }
 
         }
-
-        public Blog Get(int id)
-        {
-            using (SqlConnection conn = Connection)
-            {
-                conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT Title, Url, Id FROM Blog WHERE Id = @id";
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    Blog blog = null;
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        if  (blog == null)
-                        {
-                            blog = new Blog()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Url = reader.GetString(reader.GetOrdinal("Url"))
-                            };
-                        }
-                    }
-
-                    reader.Close();
-
-                    return blog;
-                }
-            }
-
-        }
-
 
         public List<Tag> GetAllTags()
         {
