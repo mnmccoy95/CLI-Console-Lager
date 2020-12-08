@@ -241,17 +241,17 @@ namespace TabloidCLI.UserInterfaceManagers
             }
 
             Console.Write("New Author (Do you what to change the Author? y/n: ");
-            string changeAuthor = Console.ReadLine().ToLower();
-            if (changeAuthor == "y")
+            Author changeAuthor = ChooseA();
+            if (changeAuthor != null)
             {
-                postToEdit.Author = ChooseA();
+                postToEdit.Author = changeAuthor;
             }
 
             Console.Write("New Blog (Do you want to change the Blog? y/n: ");
-            string changeBlog = Console.ReadLine().ToLower();
-            if (changeBlog == "y")
+            Blog changeBlog = ChooseB();
+            if (changeBlog != null)
             {
-                postToEdit.Blog = ChooseB();
+                postToEdit.Blog = changeBlog;
             }
 
             _postRepository.Update(postToEdit);
