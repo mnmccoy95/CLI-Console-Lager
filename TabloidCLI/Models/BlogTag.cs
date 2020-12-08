@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TabloidCLI.Models
 {
-    public class BlogTag
+    public class BlogTag : Tag
     {
         public int BlogId { get; set; }
 

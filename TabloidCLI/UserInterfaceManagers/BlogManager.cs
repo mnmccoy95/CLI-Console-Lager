@@ -70,7 +70,18 @@ namespace TabloidCLI.UserInterfaceManagers
             int focusBLog = int.Parse(Console.ReadLine());
             Console.WriteLine("--------------------");
             Blog blog = _blogRepository.Get(focusBLog);
+            List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+            
+
             Console.WriteLine($"{blog.Title} - {blog.Url}");
+            Console.Write("Tags: ");
+            foreach (Tag tag in blogTags)
+            {
+                Console.Write($"{tag.Name} ");
+            }
+
+            Console.WriteLine(" ");
+
             Console.WriteLine("1) View");
             Console.WriteLine("2) Add Tag");
             Console.WriteLine("3) Remove Tag");
@@ -102,17 +113,12 @@ namespace TabloidCLI.UserInterfaceManagers
             TagList();
             Console.Write("Select a tag to add: ");
             int tagId = int.Parse(Console.ReadLine());
-
             BlogTag newTag = new BlogTag
             {
                 BlogId = blog.Id,
                 TagId = tagId
             };
-
             _blogRepository.InsertTag(newTag);
-            
-            
-            
         }
 
         public void TagList()
