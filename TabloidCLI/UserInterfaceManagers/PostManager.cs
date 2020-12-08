@@ -188,16 +188,26 @@ namespace TabloidCLI.UserInterfaceManagers
                     post.PublishDateTime = new DateTime(0, 0, day);
                 }
             }
-            while ()
+            while (post.PublishDateTime.Month == 0)
             {
                 Console.WriteLine("Month: ");
                 int month = Convert.ToInt32(Console.ReadLine());
+                if (month > 0 && month < 13)
+                {
+                    post.PublishDateTime = new DateTime(0, month, post.PublishDateTime.Day);
+                }
 
             }
-            Console.WriteLine("Year: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-
-            return new DateTime(year, month, day);
+            while (post.PublishDateTime.Year == 0)
+            {
+                Console.WriteLine("Year: ");
+                int year = Convert.ToInt32(Console.ReadLine());
+                if (year > 1752 && year < 10000)
+                {
+                    post.PublishDateTime = new DateTime(year, post.PublishDateTime.Month, post.PublishDateTime.Day);
+                }
+            }
+            return post.PublishDateTime;
         }
 
         private void Add()
