@@ -84,6 +84,35 @@ namespace TabloidCLI
             }
         }
 
+        public List<Tag> GetLinkedTags(int blogId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select Tag.Name, Tag.Id From BlogTag JOIN Tag on BlogTag.TagId = Tag.Id WHERE BlogTag.BlogId = @blogId";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+
+                    List<Tag> blogTags = new List<Tag>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                        blogTags.Add(tag);
+                    }
+                    reader.Close();
+                    return blogTags;
+                }
+            }
+
+        }
+
         public Blog Get(int id)
         {
             using (SqlConnection conn = Connection)
