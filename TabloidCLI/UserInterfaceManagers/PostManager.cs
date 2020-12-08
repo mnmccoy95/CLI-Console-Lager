@@ -66,9 +66,18 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine($"From Blog: {post.Blog.Title}");
                 Console.WriteLine($"Link: {post.Url}");
                 Console.WriteLine($"Pushblished: {post.PublishDateTime}");
-                Console.WriteLine($"Tags: {post.Author.Tags[0]}");
+                DisplayTags(post.Author.Tags);
                 Console.WriteLine("----------------------------------------------------------");
             }
+        }
+        private void DisplayTags(List<Tag> tags)
+        {
+            string text = "Tags: ";
+            foreach (Tag tag in tags)
+            {
+                text += $"{tag.Name} ";
+            }
+            Console.WriteLine(text);
         }
 
         private Post ChooseP(string prompt = null)
