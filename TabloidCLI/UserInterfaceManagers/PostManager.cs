@@ -65,7 +65,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 Console.WriteLine($"Author Name: {post.Author.FullName}");
                 Console.WriteLine($"From Blog: {post.Blog.Title}");
                 Console.WriteLine($"Link: {post.Url}");
-                Console.WriteLine($"Pushblished: {post.PublishDateTime}");
+                Console.WriteLine($"Pushblished: {post.PublishDateTime.ToString("dd-MM-yyyy")}");
                 DisplayTags(post.Author.Tags);
                 Console.WriteLine("----------------------------------------------------------");
             }
@@ -198,7 +198,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Url: ");
             post.Url = Console.ReadLine();
 
-            Console.Write("PublishDateTime: ");
+            Console.Write("PublishDateTime (pick a year between 1753 and 9999): ");
             post.PublishDateTime = PromptDateTime();
 
             Console.Write("Choose an Author");
