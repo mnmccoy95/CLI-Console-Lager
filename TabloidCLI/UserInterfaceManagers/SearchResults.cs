@@ -33,5 +33,19 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine();
         }
+
+        public void DisplayAll()
+        {
+            string[] typeName = _results[0].GetType().ToString().Split(".");
+            string specificName = typeName[2];
+            Console.WriteLine($"{Title} in {specificName}s");
+
+            foreach (T result in _results)
+            {
+                Console.WriteLine(" " + result);
+            }
+
+            Console.WriteLine();
+        }
     }
 }
