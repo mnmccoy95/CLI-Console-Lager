@@ -70,15 +70,12 @@ namespace TabloidCLI.UserInterfaceManagers
             int focusBLog = int.Parse(Console.ReadLine());
             Console.WriteLine("--------------------");
             Blog blog = _blogRepository.Get(focusBLog);
-            List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+            
             
 
             Console.WriteLine($"{blog.Title} - {blog.Url}");
-            Console.Write("Tags: ");
-            foreach (Tag tag in blogTags)
-            {
-                Console.Write($"{tag.Name} ");
-            }
+            
+           
 
             Console.WriteLine(" ");
 
@@ -93,7 +90,16 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
-                    throw new NotImplementedException();
+                    List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+                    Console.WriteLine("--------------------");
+                    Console.WriteLine($"{blog.Title}");
+                    Console.WriteLine("Tags: ");
+                    foreach (Tag tag in blogTags)
+                    {
+                        Console.WriteLine($"{tag.Name} ");
+                    }
+                    //TagList();
+                    return;
                 case "2":
                     AddTag(blog);
                     return;
@@ -116,8 +122,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{post.Id}) {post.Title} - {post.Url} - {post.PublishDateTime}");
             }
-
-
         }
 
         private void RemoveTag(Blog blog)
