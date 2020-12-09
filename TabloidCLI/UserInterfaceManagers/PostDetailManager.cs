@@ -39,6 +39,7 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1":
+                    View();
                     return this;
                 case "2":
                     AddTag();
@@ -54,7 +55,22 @@ namespace TabloidCLI.UserInterfaceManagers
                     return this;
             }
         }
+        private void View()
+        {
+            Post post = _postRepository.Get(_postId);
+            Console.WriteLine($"Title: {post.Title}");
 
+            Console.WriteLine($"URL: {post.Url}");
+            Console.WriteLine($"Publish Date: {post.PublishDateTime}");
+            Console.WriteLine($"Author: {post.Author.FullName}");
+            Console.WriteLine($"Blog: {post.Blog.Title}");
+            Console.WriteLine("Tags:");
+            foreach (Tag tag in post.Tags)
+            {
+                Console.WriteLine(" " + tag);
+            }
+            Console.WriteLine();
+        }
         private void AddTag()
         {
             Post post = _postRepository.Get(_postId);

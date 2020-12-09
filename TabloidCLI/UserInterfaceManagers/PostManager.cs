@@ -26,10 +26,18 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Console.WriteLine("Post Menu");
             Console.WriteLine(" 1) List Posts");
+<<<<<<< HEAD
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
             Console.WriteLine(" 5) Post Details");
+=======
+            Console.WriteLine(" 2) Post Details");
+            Console.WriteLine(" 3) Add Post");
+            Console.WriteLine(" 4) Edit Post");
+            Console.WriteLine(" 5) Remove Post");
+            Console.WriteLine(" 6) Manage Notes");
+>>>>>>> master
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -40,15 +48,6 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-                    Add();
-                    return this;
-                case "3":
-                    Edit();
-                    return this;
-                case "4":
-                    Remove();
-                    return this;
-                case "5":
                     Post post = ChooseP();
                     if (post == null)
                     {
@@ -58,6 +57,19 @@ namespace TabloidCLI.UserInterfaceManagers
                     {
                         return new PostDetailManager(this, _connectionString, post.Id);
                     }
+<<<<<<< HEAD
+=======
+                case "3":
+                    Add();
+                    return this;
+                case "4":
+                    Edit();
+                    return this;
+                case "5":
+                    Remove();
+                    return this;
+                case "6": return new NoteManager(this, _connectionString);
+>>>>>>> master
                 case "0":
                     return _parentUI;
                 default:

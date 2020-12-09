@@ -101,10 +101,22 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag(blog);
                     return;
                 case "4":
-                    throw new NotImplementedException();
+                    ViewBlogPosts(blog);
+                    return;
                 case "0":
                     return;
             }
+
+        }
+
+        private void ViewBlogPosts(Blog blog)
+        {
+            List<Post> blogPosts = _blogRepository.GetLinkedPosts(blog.Id);
+            foreach (Post post in blogPosts)
+            {
+                Console.WriteLine($"{post.Id}) {post.Title} - {post.Url} - {post.PublishDateTime}");
+            }
+
 
         }
 
