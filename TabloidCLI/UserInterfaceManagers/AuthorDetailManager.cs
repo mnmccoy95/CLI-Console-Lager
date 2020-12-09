@@ -69,12 +69,28 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine();
         }
 
+        private void DisplayTags(List<Tag> tags)
+        {
+            string text = "Tags: ";
+            foreach (Tag tag in tags)
+            {
+                text += $"{tag.Name} ";
+            }
+            Console.WriteLine(text);
+        }
         private void ViewBlogPosts()
         {
             List<Post> posts = _postRepository.GetByAuthor(_authorId);
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine("----------------------------------------------------------");
+                Console.WriteLine($"Title: {post.Title}");
+                Console.WriteLine($"Author Name: {post.Author.FullName}");
+                Console.WriteLine($"From Blog: {post.Blog.Title}");
+                Console.WriteLine($"Link: {post.Url}");
+                Console.WriteLine($"Pushblished: {post.PublishDateTime.ToString("dd-MM-yyyy")}");
+                DisplayTags(post.Author.Tags);
+                Console.WriteLine("----------------------------------------------------------");
             }
             Console.WriteLine();
         }

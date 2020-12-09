@@ -178,28 +178,21 @@ namespace TabloidCLI.UserInterfaceManagers
         public static DateTime PromptDateTime()
         {
             Post post = new Post();
-            post.PublishDateTime = new DateTime(0, 0, 0);
-            while (post.PublishDateTime.Day == 0)
+            post.PublishDateTime = new DateTime(1, 1, 0001);
+            while (post.PublishDateTime.Year == 0001)
             {
                 Console.WriteLine("Day: ");
                 int day = Convert.ToInt32(Console.ReadLine());
                 if (day > 0 && day < 31)
                 {
-                    post.PublishDateTime = new DateTime(0, 0, day);
+                    post.PublishDateTime = new DateTime(post.PublishDateTime.Year, post.PublishDateTime.Month, day);
                 }
-            }
-            while (post.PublishDateTime.Month == 0)
-            {
                 Console.WriteLine("Month: ");
                 int month = Convert.ToInt32(Console.ReadLine());
                 if (month > 0 && month < 13)
                 {
-                    post.PublishDateTime = new DateTime(0, month, post.PublishDateTime.Day);
+                    post.PublishDateTime = new DateTime(post.PublishDateTime.Year, month, post.PublishDateTime.Day);
                 }
-
-            }
-            while (post.PublishDateTime.Year == 0)
-            {
                 Console.WriteLine("Year: ");
                 int year = Convert.ToInt32(Console.ReadLine());
                 if (year > 1752 && year < 10000)
