@@ -184,11 +184,14 @@ namespace TabloidCLI
                                                p.Title,
                                                p.Url,
                                                p.PublishDateTime,
-                                               p.AuthorId,
-                                               p.BlogId
+                                               a.FirstName,
+                                               a.LastName,
+                                               b.Title
                                           FROM Post p
                                                LEFT JOIN PostTag pt on p.Id = pt.PostId
                                                LEFT JOIN Tag t on t.Id = pt.TagId
+                                               LEFT JOIN Author a on p.AuthorId = a.Id
+                                               LEFT JOIN Blog b on p.BlogId = b.Id
                                          WHERE t.Name LIKE @name";
                     cmd.Parameters.AddWithValue("@name", $"%{tagName}%");
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -212,6 +215,7 @@ namespace TabloidCLI
                                 Title = reader.GetString(reader.GetOrdinal("Title"))
                             }
                         };
+                        
                         results.Add(post);
                     }
 
