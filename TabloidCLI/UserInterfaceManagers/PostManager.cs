@@ -29,6 +29,7 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
+            Console.WriteLine(" 5) Manage Notes");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -47,6 +48,7 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
+                case "5": return new NoteManager(this, _connectionString);
                 case "0":
                     return _parentUI;
                 default:
@@ -175,16 +177,37 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public static DateTime PromptDateTime()
         {
-            Console.WriteLine("Day: ");
-            int day = Convert.ToInt32(Console.ReadLine());
+            Post post = new Post();
+            post.PublishDateTime = new DateTime(0, 0, 0);
+            while (post.PublishDateTime.Day == 0)
+            {
+                Console.WriteLine("Day: ");
+                int day = Convert.ToInt32(Console.ReadLine());
+                if (day > 0 && day < 31)
+                {
+                    post.PublishDateTime = new DateTime(0, 0, day);
+                }
+            }
+            while (post.PublishDateTime.Month == 0)
+            {
+                Console.WriteLine("Month: ");
+                int month = Convert.ToInt32(Console.ReadLine());
+                if (month > 0 && month < 13)
+                {
+                    post.PublishDateTime = new DateTime(0, month, post.PublishDateTime.Day);
+                }
 
-            Console.WriteLine("Month: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Year: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-
-            return new DateTime(year, month, day);
+            }
+            while (post.PublishDateTime.Year == 0)
+            {
+                Console.WriteLine("Year: ");
+                int year = Convert.ToInt32(Console.ReadLine());
+                if (year > 1752 && year < 10000)
+                {
+                    post.PublishDateTime = new DateTime(year, post.PublishDateTime.Month, post.PublishDateTime.Day);
+                }
+            }
+            return post.PublishDateTime;
         }
 
         private void Add()

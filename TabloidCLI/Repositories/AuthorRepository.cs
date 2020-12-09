@@ -151,6 +151,7 @@ namespace TabloidCLI
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = "DELETE FROM Author WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@aid", id);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -190,5 +191,5 @@ namespace TabloidCLI
                 }
             }
         }
-     }
+    }
 }
