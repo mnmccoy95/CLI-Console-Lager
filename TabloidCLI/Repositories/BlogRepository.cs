@@ -129,7 +129,7 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"Select Tag.Name, Tag.Id From BlogTag JOIN Tag on BlogTag.TagId = Tag.Id WHERE BlogTag.BlogId = @blogId";
+                    cmd.CommandText = @"Select Tag.Name, BlogTag.Id From BlogTag JOIN Tag on BlogTag.TagId = Tag.Id WHERE BlogTag.BlogId = @blogId";
                     cmd.Parameters.AddWithValue("@blogId", blogId);
 
                     List<Tag> blogTags = new List<Tag>();
@@ -148,7 +148,6 @@ namespace TabloidCLI
                     return blogTags;
                 }
             }
-
         }
 
         public List<Tag> GetAllTags()
@@ -192,6 +191,21 @@ namespace TabloidCLI
                     Console.WriteLine("Successfully added tag!");
                 }
             }            
+        }
+    
+        public void DeleteTag(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM BlogTag WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Succesfully Deleted BlogTag");
+                }
+            }
         }
     }
 }
