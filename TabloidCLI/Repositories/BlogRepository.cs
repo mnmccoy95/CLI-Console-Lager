@@ -32,6 +32,12 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
+                    cmd.CommandText = "DELETE FROM Post WHERE BlogId = @blogId2";
+                    cmd.Parameters.AddWithValue("@blogId2", id);
+                    cmd.ExecuteNonQuery();
+                    cmd.CommandText = "DELETE FROM BlogTag WHERE BlogId = @blogId";
+                    cmd.Parameters.AddWithValue("@blogId", id);
+                    cmd.ExecuteNonQuery();
                     cmd.CommandText = "DELETE FROM Blog WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.ExecuteNonQuery();
@@ -100,7 +106,7 @@ namespace TabloidCLI
 
                     while (reader.Read())
                     {
-                        if  (blog == null)
+                        if (blog == null)
                         {
                             blog = new Blog()
                             {
@@ -119,6 +125,33 @@ namespace TabloidCLI
 
         }
 
+        public List<Tag> GetLinkedTags(int blogId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"Select Tag.Name, BlogTag.Id From BlogTag JOIN Tag on BlogTag.TagId = Tag.Id WHERE BlogTag.BlogId = @blogId";
+                    cmd.Parameters.AddWithValue("@blogId", blogId);
+
+                    List<Tag> blogTags = new List<Tag>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Tag tag = new Tag()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                        blogTags.Add(tag);
+                    }
+                    reader.Close();
+                    return blogTags;
+                }
+            }
+        }
 
         public List<Tag> GetAllTags()
         {
@@ -161,6 +194,59 @@ namespace TabloidCLI
                     Console.WriteLine("Successfully added tag!");
                 }
             }            
+        }
+    
+        public void DeleteTag(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM BlogTag WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    Console.WriteLine("Succesfully Deleted BlogTag");
+                }
+            }
+        }
+    
+        public List<Post> GetLinkedPosts(int blogId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id, Title, URL, PublishDateTime, AuthorId, BlogId FROM Post WHERE BlogId = @id";
+                    cmd.Parameters.AddWithValue("@id", blogId);
+
+                    List<Post> blogPosts = new List<Post>();
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Post post = new Post()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Url = reader.GetString(reader.GetOrdinal("URL")),
+                            PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                            Author = new Author()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("AuthorId"))
+                            },
+                            Blog = new Blog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("BlogId"))
+                            }
+                        };
+                        blogPosts.Add(post);
+                    }
+                    reader.Close();
+                    return blogPosts;
+                }
+            }
         }
     }
 }

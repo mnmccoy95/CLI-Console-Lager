@@ -70,7 +70,18 @@ namespace TabloidCLI.UserInterfaceManagers
             int focusBLog = int.Parse(Console.ReadLine());
             Console.WriteLine("--------------------");
             Blog blog = _blogRepository.Get(focusBLog);
+            List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+            
+
             Console.WriteLine($"{blog.Title} - {blog.Url}");
+            Console.Write("Tags: ");
+            foreach (Tag tag in blogTags)
+            {
+                Console.Write($"{tag.Name} ");
+            }
+
+            Console.WriteLine(" ");
+
             Console.WriteLine("1) View");
             Console.WriteLine("2) Add Tag");
             Console.WriteLine("3) Remove Tag");
@@ -87,13 +98,38 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag(blog);
                     return;
                 case "3":
-                    throw new NotImplementedException();
+                    RemoveTag(blog);
+                    return;
                 case "4":
-                    throw new NotImplementedException();
+                    ViewBlogPosts(blog);
+                    return;
                 case "0":
                     return;
             }
 
+        }
+
+        private void ViewBlogPosts(Blog blog)
+        {
+            List<Post> blogPosts = _blogRepository.GetLinkedPosts(blog.Id);
+            foreach (Post post in blogPosts)
+            {
+                Console.WriteLine($"{post.Id}) {post.Title} - {post.Url} - {post.PublishDateTime}");
+            }
+
+
+        }
+
+        private void RemoveTag(Blog blog)
+        {
+            List<Tag> linkedTags = _blogRepository.GetLinkedTags(blog.Id);
+            foreach (Tag tag in linkedTags)
+            {
+                Console.WriteLine($"{tag.Id}) {tag.Name}");
+            }
+            Console.Write("Enter the ID of the tag you wish to delete: ");
+            int tagToDelete = int.Parse(Console.ReadLine());
+            _blogRepository.DeleteTag(tagToDelete);
         }
 
         private void AddTag(Blog blog)
@@ -102,17 +138,12 @@ namespace TabloidCLI.UserInterfaceManagers
             TagList();
             Console.Write("Select a tag to add: ");
             int tagId = int.Parse(Console.ReadLine());
-
             BlogTag newTag = new BlogTag
             {
                 BlogId = blog.Id,
                 TagId = tagId
             };
-
             _blogRepository.InsertTag(newTag);
-            
-            
-            
         }
 
         public void TagList()
