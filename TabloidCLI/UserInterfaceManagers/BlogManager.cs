@@ -70,34 +70,43 @@ namespace TabloidCLI.UserInterfaceManagers
             int focusBLog = int.Parse(Console.ReadLine());
             Console.WriteLine("--------------------");
             Blog blog = _blogRepository.Get(focusBLog);
-            List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+            
             
 
             Console.WriteLine($"{blog.Title} - {blog.Url}");
-            Console.Write("Tags: ");
-            foreach (Tag tag in blogTags)
-            {
-                Console.Write($"{tag.Name} ");
-            }
+            
+           
 
             Console.WriteLine(" ");
 
-            Console.WriteLine("1) Add Tag");
-            Console.WriteLine("2) Remove Tag");
-            Console.WriteLine("3) View Posts");
+            Console.WriteLine("1) View");
+            Console.WriteLine("2) Add Tag");
+            Console.WriteLine("3) Remove Tag");
+            Console.WriteLine("4) View Posts");
             Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
             switch (choice)
-            {                
+            {
                 case "1":
-                    AddTag(blog);
+                    List<Tag> blogTags = _blogRepository.GetLinkedTags(blog.Id);
+                    Console.WriteLine("--------------------");
+                    Console.WriteLine($"{blog.Title}");
+                    Console.WriteLine("Tags: ");
+                    foreach (Tag tag in blogTags)
+                    {
+                        Console.WriteLine($"{tag.Name} ");
+                    }
+                    //TagList();
                     return;
                 case "2":
-                    RemoveTag(blog);
+                    AddTag(blog);
                     return;
                 case "3":
+                    RemoveTag(blog);
+                    return;
+                case "4":
                     ViewBlogPosts(blog);
                     return;
                 case "0":
@@ -113,8 +122,6 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"{post.Id}) {post.Title} - {post.Url} - {post.PublishDateTime}");
             }
-
-
         }
 
         private void RemoveTag(Blog blog)
