@@ -29,7 +29,8 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
-            Console.WriteLine(" 5) Manage Notes");
+            Console.WriteLine(" 5) Post Details");
+            Console.WriteLine(" 6) Manage Notes");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -48,7 +49,17 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
-                case "5": return new NoteManager(this, _connectionString);
+                case "5":
+                    Post post = ChooseP();
+                    if (post == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new PostDetailManager(this, _connectionString, post.Id);
+                    }
+                case "6": return new NoteManager(this, _connectionString);
                 case "0":
                     return _parentUI;
                 default:
@@ -281,6 +292,6 @@ namespace TabloidCLI.UserInterfaceManagers
                 _postRepository.Delete(postToDelete.Id);
             }
         }
-    }
+    }     
 }
 
