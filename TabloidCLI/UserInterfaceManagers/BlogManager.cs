@@ -82,25 +82,22 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine(" ");
 
-            Console.WriteLine("1) View");
-            Console.WriteLine("2) Add Tag");
-            Console.WriteLine("3) Remove Tag");
-            Console.WriteLine("4) View Posts");
+            Console.WriteLine("1) Add Tag");
+            Console.WriteLine("2) Remove Tag");
+            Console.WriteLine("3) View Posts");
             Console.WriteLine("0) Go Back");
 
             Console.Write("> ");
             string choice = Console.ReadLine();
             switch (choice)
-            {
+            {                
                 case "1":
-                    throw new NotImplementedException();
-                case "2":
                     AddTag(blog);
                     return;
-                case "3":
+                case "2":
                     RemoveTag(blog);
                     return;
-                case "4":
+                case "3":
                     ViewBlogPosts(blog);
                     return;
                 case "0":
