@@ -46,6 +46,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "4":
+                    //NoteManagement();
                     return this;
                 case "0":
                     return _parentUI;
@@ -58,6 +59,7 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Title: {post.Title}");
+
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine($"Publish Date: {post.PublishDateTime}");
             Console.WriteLine($"Author: {post.Author.FullName}");
