@@ -138,9 +138,25 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT *
-                                        FROM POST
-                                        WHERE id = @id";
+                    cmd.CommandText = @"SELECT Post.Id AS PostID, 
+                                        Post.Title AS PostTitle, 
+                                        Post.URL AS PostUrl, 
+                                        Post.PublishDateTime,
+                                        Author.Id AS AuthorId,
+                                        Author.FirstName, 
+                                        Author.LastName,
+                                        Author.Bio,
+                                        t.Id AS TagId,
+                                        t.Name,
+                                        Blog.Title AS BlogTitle,
+                                        Blog.Id AS BlogId,
+                                        Blog.Url AS BlogUrl
+                                        FROM Post
+                                        JOIN Author on Author.Id = Post.AuthorId
+                                        JOIN Blog on Blog.Id = Post.BlogId
+                                        LEFT JOIN PostTag pt on Post.Id = pt.PostId
+                                        LEFT JOIN Tag t on t.Id = pt.TagId
+                                        WHERE Post.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -153,19 +169,35 @@ namespace TabloidCLI.Repositories
                         {
                             post = new Post()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Url = reader.GetString(reader.GetOrdinal("Url")),
+                                Id = reader.GetInt32(reader.GetOrdinal("PostId")),
+                                Title = reader.GetString(reader.GetOrdinal("PostTitle")),
+                                Url = reader.GetString(reader.GetOrdinal("PostUrl")),
+                                PublishDateTime = reader.GetDateTime(reader.GetOrdinal("PublishDateTime")),
+                                Author = new Author()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("AuthorId")),
+                                    FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                                    LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                                    Bio = reader.GetString(reader.GetOrdinal("Bio")),
+                                    Tags = GetTagsA(reader.GetInt32(reader.GetOrdinal("AuthorId")))
+                                },
+                                Blog = new Blog()
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
+                                    Title = reader.GetString(reader.GetOrdinal("BlogTitle")),
+                                    Url = reader.GetString(reader.GetOrdinal("BlogUrl")),
+                                    Tags = GetTagsB(reader.GetInt32(reader.GetOrdinal("BlogId")))
+                                }
                             };
                         }
-                        //if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
-                        //{
-                        //    post.Tags.Add(new Tag()
-                        //    {
-                        //        Id = reader.GetInt32(reader.GetOrdinal("TagId")),
-                        //        Name = reader.GetString(reader.GetOrdinal("Name")),
-                        //    });
-                        //}
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        {
+                            post.Tags.Add(new Tag()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                            });
+                        }
                     }
                     reader.Close();
                     return post;
@@ -287,6 +319,40 @@ namespace TabloidCLI.Repositories
                 {
                     cmd.CommandText = @"DELETE FROM Post WHERE id = @id";
                     cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void InsertTag(Post post, Tag tag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO PostTag (PostId, TagId)
+                                                       VALUES (@postId, @tagId)";
+                    cmd.Parameters.AddWithValue("@postId", post.Id);
+                    cmd.Parameters.AddWithValue("@tagId", tag.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteTag(int postId, int tagId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM PostTag
+                                         WHERE PostId = @postId AND 
+                                               TagId = @tagId";
+                    cmd.Parameters.AddWithValue("@postId", postId);
+                    cmd.Parameters.AddWithValue("@tagId", tagId);
 
                     cmd.ExecuteNonQuery();
                 }
