@@ -29,6 +29,8 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine(" 2) Add Post");
             Console.WriteLine(" 3) Edit Post");
             Console.WriteLine(" 4) Remove Post");
+            Console.WriteLine(" 5) Post Details");
+            Console.WriteLine(" 6) Manage Notes");
             Console.WriteLine(" 0) Go Back");
 
             Console.Write("> ");
@@ -47,6 +49,17 @@ namespace TabloidCLI.UserInterfaceManagers
                 case "4":
                     Remove();
                     return this;
+                case "5":
+                    Post post = ChooseP();
+                    if (post == null)
+                    {
+                        return this;
+                    }
+                    else
+                    {
+                        return new PostDetailManager(this, _connectionString, post.Id);
+                    }
+                case "6": return new NoteManager(this, _connectionString);
                 case "0":
                     return _parentUI;
                 default:
@@ -175,16 +188,30 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public static DateTime PromptDateTime()
         {
-            Console.WriteLine("Day: ");
-            int day = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Month: ");
-            int month = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Year: ");
-            int year = Convert.ToInt32(Console.ReadLine());
-
-            return new DateTime(year, month, day);
+            Post post = new Post();
+            post.PublishDateTime = new DateTime(1, 1, 0001);
+            while (post.PublishDateTime.Year == 0001)
+            {
+                Console.WriteLine("Day: ");
+                int day = Convert.ToInt32(Console.ReadLine());
+                if (day > 0 && day < 31)
+                {
+                    post.PublishDateTime = new DateTime(post.PublishDateTime.Year, post.PublishDateTime.Month, day);
+                }
+                Console.WriteLine("Month: ");
+                int month = Convert.ToInt32(Console.ReadLine());
+                if (month > 0 && month < 13)
+                {
+                    post.PublishDateTime = new DateTime(post.PublishDateTime.Year, month, post.PublishDateTime.Day);
+                }
+                Console.WriteLine("Year: ");
+                int year = Convert.ToInt32(Console.ReadLine());
+                if (year > 1752 && year < 10000)
+                {
+                    post.PublishDateTime = new DateTime(year, post.PublishDateTime.Month, post.PublishDateTime.Day);
+                }
+            }
+            return post.PublishDateTime;
         }
 
         private void Add()
@@ -265,6 +292,6 @@ namespace TabloidCLI.UserInterfaceManagers
                 _postRepository.Delete(postToDelete.Id);
             }
         }
-    }
+    }     
 }
 
